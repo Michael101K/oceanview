@@ -86,6 +86,16 @@
         <url-pattern>/room</url-pattern>
     </servlet-mapping>
 
+    <!-- User Servlet -->
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>lk.oceanview.servlet.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+
     <!-- ================================================ -->
     <!--  Session Timeout (30 minutes)                    -->
     <!-- ================================================ -->

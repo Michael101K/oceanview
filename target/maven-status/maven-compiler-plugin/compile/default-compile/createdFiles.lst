@@ -9,6 +9,7 @@ lk\oceanview\dao\BillDAO.class
 lk\oceanview\servlet\LoginServlet.class
 lk\oceanview\dao\ReservationDAO.class
 lk\oceanview\servlet\ReservationServlet.class
+lk\oceanview\servlet\UserServlet.class
 lk\oceanview\model\Bill.class
 lk\oceanview\model\User.class
 lk\oceanview\model\Guest.class

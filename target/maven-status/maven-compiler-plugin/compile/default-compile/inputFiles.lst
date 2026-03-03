@@ -6,6 +6,7 @@ D:\classified\z\OceanView\oceanview\src\main\java\lk\oceanview\dao\RoomDAO.java
 D:\classified\z\OceanView\oceanview\src\main\java\lk\oceanview\model\Bill.java
 D:\classified\z\OceanView\oceanview\src\main\java\lk\oceanview\servlet\ReservationServlet.java
 D:\classified\z\OceanView\oceanview\src\main\java\lk\oceanview\servlet\LoginServlet.java
+D:\classified\z\OceanView\oceanview\src\main\java\lk\oceanview\servlet\UserServlet.java
 D:\classified\z\OceanView\oceanview\src\main\java\lk\oceanview\model\Room.java
 D:\classified\z\OceanView\oceanview\src\main\java\lk\oceanview\servlet\BillServlet.java
 D:\classified\z\OceanView\oceanview\src\main\java\lk\oceanview\dao\UserDAO.java
