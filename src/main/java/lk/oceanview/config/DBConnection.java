@@ -18,7 +18,7 @@ public class DBConnection {
     // ------------------------------------------------
     private static final String DB_URL      = "jdbc:mysql://localhost:3306/ocean_view_resort?useSSL=false&serverTimezone=UTC";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "your_password_here"; // <-- change this
+    private static final String DB_PASSWORD = "password@123"; // <-- change this
 
     // The single instance
     private static DBConnection instance;
