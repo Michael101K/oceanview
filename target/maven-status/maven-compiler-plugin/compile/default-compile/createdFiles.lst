@@ -1,5 +1,6 @@
 lk\oceanview\model\Reservation.class
 lk\oceanview\servlet\DashboardServlet.class
+lk\oceanview\servlet\GuestServlet.class
 lk\oceanview\model\Room.class
 lk\oceanview\dao\GuestDAO.class
 lk\oceanview\dao\RoomDAO.class
@@ -7,7 +8,9 @@ lk\oceanview\dao\UserDAO.class
 lk\oceanview\dao\BillDAO.class
 lk\oceanview\servlet\LoginServlet.class
 lk\oceanview\dao\ReservationDAO.class
+lk\oceanview\servlet\ReservationServlet.class
 lk\oceanview\model\Bill.class
 lk\oceanview\model\User.class
 lk\oceanview\model\Guest.class
+lk\oceanview\servlet\BillServlet.class
 lk\oceanview\config\DBConnection.class

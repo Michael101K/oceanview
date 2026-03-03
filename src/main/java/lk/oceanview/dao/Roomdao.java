@@ -31,7 +31,15 @@ public class RoomDAO {
         try (PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                rooms.add(mapResultSetToRoom(rs));
+                Room room = new Room();
+                room.setRoomId(rs.getInt("room_id"));
+                room.setRoomNumber(rs.getString("room_number"));
+                room.setRoomTypeName(rs.getString("room_type"));
+                room.setRatePerNight(rs.getDouble("rate_per_night"));
+                room.setMaxOccupancy(rs.getInt("max_occupancy"));
+                room.setFloor(rs.getInt("floor"));
+                room.setStatus("AVAILABLE");
+                rooms.add(room);
             }
         } catch (SQLException e) {
             System.err.println("[RoomDAO] getAvailableRooms error: " + e.getMessage());
