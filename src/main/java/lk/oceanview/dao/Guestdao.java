@@ -17,19 +17,14 @@ import java.util.List;
  */
 public class GuestDAO {
 
-    private Connection connection;
-
-    public GuestDAO() {
-        this.connection = DBConnection.getInstance().getConnection();
-    }
-
     // ------------------------------------------------
     // Add a new guest and return the generated guest_id
     // ------------------------------------------------
     public int addGuest(Guest guest) {
         String sql = "INSERT INTO guests (full_name, address, contact_number, email, nic_number) " +
                      "VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, guest.getFullName());
             ps.setString(2, guest.getAddress());
             ps.setString(3, guest.getContactNumber());
@@ -54,7 +49,8 @@ public class GuestDAO {
     // ------------------------------------------------
     public Guest getGuestById(int guestId) {
         String sql = "SELECT * FROM guests WHERE guest_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, guestId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -71,7 +67,8 @@ public class GuestDAO {
     // ------------------------------------------------
     public Guest getGuestByNIC(String nicNumber) {
         String sql = "SELECT * FROM guests WHERE nic_number = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, nicNumber);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -89,7 +86,8 @@ public class GuestDAO {
     public List<Guest> searchGuestsByName(String name) {
         List<Guest> guests = new ArrayList<>();
         String sql = "SELECT * FROM guests WHERE full_name LIKE ? ORDER BY full_name";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, "%" + name + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -107,7 +105,8 @@ public class GuestDAO {
     public List<Guest> getAllGuests() {
         List<Guest> guests = new ArrayList<>();
         String sql = "SELECT * FROM guests ORDER BY full_name";
-        try (PreparedStatement ps = connection.prepareStatement(sql);
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 guests.add(mapResultSetToGuest(rs));
@@ -124,7 +123,8 @@ public class GuestDAO {
     public boolean updateGuest(Guest guest) {
         String sql = "UPDATE guests SET full_name = ?, address = ?, contact_number = ?, " +
                      "email = ?, nic_number = ? WHERE guest_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, guest.getFullName());
             ps.setString(2, guest.getAddress());
             ps.setString(3, guest.getContactNumber());

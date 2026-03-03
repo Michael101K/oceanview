@@ -13,4 +13,5 @@ lk\oceanview\model\Bill.class
 lk\oceanview\model\User.class
 lk\oceanview\model\Guest.class
 lk\oceanview\servlet\BillServlet.class
+lk\oceanview\servlet\RoomServlet.class
 lk\oceanview\config\DBConnection.class

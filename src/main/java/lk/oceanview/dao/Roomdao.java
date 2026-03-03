@@ -16,19 +16,14 @@ import java.util.List;
  */
 public class RoomDAO {
 
-    private Connection connection;
-
-    public RoomDAO() {
-        this.connection = DBConnection.getInstance().getConnection();
-    }
-
     // ------------------------------------------------
     // Get all available rooms
     // ------------------------------------------------
     public List<Room> getAvailableRooms() {
         List<Room> rooms = new ArrayList<>();
         String sql = "SELECT * FROM vw_available_rooms ORDER BY floor, room_number";
-        try (PreparedStatement ps = connection.prepareStatement(sql);
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Room room = new Room();
@@ -56,7 +51,8 @@ public class RoomDAO {
                      "rt.type_name, rt.rate_per_night, rt.max_occupancy " +
                      "FROM rooms r JOIN room_types rt ON r.room_type_id = rt.room_type_id " +
                      "ORDER BY r.floor, r.room_number";
-        try (PreparedStatement ps = connection.prepareStatement(sql);
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 rooms.add(mapResultSetToRoom(rs));
@@ -75,7 +71,8 @@ public class RoomDAO {
                      "rt.type_name, rt.rate_per_night, rt.max_occupancy " +
                      "FROM rooms r JOIN room_types rt ON r.room_type_id = rt.room_type_id " +
                      "WHERE r.room_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, roomId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -92,7 +89,8 @@ public class RoomDAO {
     // ------------------------------------------------
     public boolean updateRoomStatus(int roomId, String status) {
         String sql = "UPDATE rooms SET status = ? WHERE room_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, status);
             ps.setInt(2, roomId);
             return ps.executeUpdate() > 0;
@@ -109,7 +107,8 @@ public class RoomDAO {
         String sql = "SELECT COUNT(*) FROM reservations " +
                      "WHERE room_id = ? AND status NOT IN ('CANCELLED', 'CHECKED_OUT') " +
                      "AND NOT (check_out_date <= ? OR check_in_date >= ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, roomId);
             ps.setString(2, checkIn);
             ps.setString(3, checkOut);

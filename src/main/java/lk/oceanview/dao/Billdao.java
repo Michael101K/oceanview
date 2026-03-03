@@ -15,12 +15,6 @@ import java.sql.Statement;
  */
 public class BillDAO {
 
-    private Connection connection;
-
-    public BillDAO() {
-        this.connection = DBConnection.getInstance().getConnection();
-    }
-
     // ------------------------------------------------
     // Generate and save a bill for a reservation
     // ------------------------------------------------
@@ -28,7 +22,8 @@ public class BillDAO {
         String sql = "INSERT INTO bills (reservation_id, room_charges, tax_amount, " +
                      "discount_amount, total_amount, payment_status, payment_method) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, bill.getReservationId());
             ps.setDouble(2, bill.getRoomCharges());
             ps.setDouble(3, bill.getTaxAmount());
@@ -62,7 +57,8 @@ public class BillDAO {
                      "JOIN rooms rm        ON r.room_id = rm.room_id " +
                      "JOIN room_types rt   ON rm.room_type_id = rt.room_type_id " +
                      "WHERE b.reservation_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, reservationId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -79,7 +75,8 @@ public class BillDAO {
     // ------------------------------------------------
     public boolean updatePaymentStatus(int billId, String paymentStatus) {
         String sql = "UPDATE bills SET payment_status = ? WHERE bill_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, paymentStatus);
             ps.setInt(2, billId);
             return ps.executeUpdate() > 0;
@@ -94,7 +91,8 @@ public class BillDAO {
     // ------------------------------------------------
     public boolean billExistsForReservation(int reservationId) {
         String sql = "SELECT COUNT(*) FROM bills WHERE reservation_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, reservationId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
