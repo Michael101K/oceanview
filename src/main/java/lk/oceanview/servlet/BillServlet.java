@@ -491,6 +491,9 @@ public class BillServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/reservation?action=list'>📋 All Reservations</a>");
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
         out.println("<a href='" + contextPath + "/bill' class='active'>💰 Billing</a>");
+        if ("ADMIN".equals(role)) {
+            out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
+        }
         out.println("</nav>");
         out.println("<div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div>");
         out.println("</div>");
