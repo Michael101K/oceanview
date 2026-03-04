@@ -445,7 +445,9 @@ public class UserServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/reservation?action=add'>➕ New Reservation</a>");
         out.println("<a href='" + contextPath + "/reservation?action=list'>📋 All Reservations</a>");
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
+        out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
+        out.println("<a href='" + contextPath + "/help' class='active'>❓ Help & Guide</a>");
         out.println("<a href='" + contextPath + "/user?action=list' class='active'>👥 Manage Users</a>");
         out.println("</nav>");
         out.println("<div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div>");

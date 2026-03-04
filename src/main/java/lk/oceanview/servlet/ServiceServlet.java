@@ -457,6 +457,7 @@ public class ServiceServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
         out.println("<a href='" + contextPath + "/service?action=list' class='active'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
+        out.println("<a href='" + contextPath + "/help' class='active'>❓ Help & Guide</a>");
         if (user.isAdmin()) {
             out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
         }

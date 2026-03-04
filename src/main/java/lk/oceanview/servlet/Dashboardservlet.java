@@ -110,10 +110,12 @@ public class DashboardServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/reservation?action=add'>➕ New Reservation</a>");
         out.println("<a href='" + contextPath + "/reservation?action=list'>📋 All Reservations</a>");
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
+        out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
         if ("ADMIN".equals(role)) {
             out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
         }
+        out.println("<a href='" + contextPath + "/help' class='active'>❓ Help & Guide</a>");
         out.println("</nav>");
         out.println("<div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div>");
         out.println("</div>");

@@ -59,14 +59,14 @@ public class BillServlet extends HttpServlet {
 
         // If no reservation number given - show search form
         if (reservationNumber == null || reservationNumber.trim().isEmpty()) {
-            showBillSearchPage(out, contextPath, null, null);
+            showBillSearchPage(out, contextPath, null, null, session);
             return;
         }
 
         // Look up reservation
         Reservation reservation = reservationDAO.getReservationByNumber(reservationNumber.trim());
         if (reservation == null) {
-            showBillSearchPage(out, contextPath, reservationNumber, "notfound");
+            showBillSearchPage(out, contextPath, reservationNumber, "notfound", session);
             return;
         }
 
@@ -94,7 +94,7 @@ public class BillServlet extends HttpServlet {
         }
 
         // Show bill page
-        showBillPage(out, contextPath, reservation, existingBill, reservationId);
+        showBillPage(out, contextPath, reservation, existingBill, reservationId, session);
     }
 
     // ------------------------------------------------
@@ -178,8 +178,8 @@ public class BillServlet extends HttpServlet {
     // Show Bill Search Page
     // ------------------------------------------------
     private void showBillSearchPage(PrintWriter out, String contextPath,
-                                    String searchedNumber, String error) {
-        printPageHeader(out, "Billing | Ocean View Resort", contextPath);
+                                    String searchedNumber, String error, HttpSession session) {
+        printPageHeader(out, "Billing | Ocean View Resort", contextPath, session);
 
         out.println("<div class='main'>");
         out.println("<div class='page-header'><h1>💰 Billing</h1><p>Enter a reservation number to generate or view a bill</p></div>");
@@ -240,9 +240,9 @@ public class BillServlet extends HttpServlet {
     // ------------------------------------------------
     private void showBillPage(PrintWriter out, String contextPath,
                               Reservation reservation, Bill existingBill,
-                              int reservationId) {
+                              int reservationId, HttpSession session) {
 
-        printPageHeader(out, "Bill | Ocean View Resort", contextPath);
+        printPageHeader(out, "Bill | Ocean View Resort", contextPath, session);
 
         String msg   = ""; // passed via redirect in real flow
         long nights  = reservation.getNumNights();
@@ -404,7 +404,9 @@ public class BillServlet extends HttpServlet {
     // ------------------------------------------------
     // Shared page header (sidebar + styles)
     // ------------------------------------------------
-    private void printPageHeader(PrintWriter out, String title, String contextPath) {
+    private void printPageHeader(PrintWriter out, String title, String contextPath, HttpSession session) {
+        User user          = (User) session.getAttribute("loggedInUser");
+
         out.println("<!DOCTYPE html><html lang='en'><head>");
         out.println("<meta charset='UTF-8'>");
         out.println("<meta name='viewport' content='width=device-width, initial-scale=1.0'>");
@@ -490,8 +492,9 @@ public class BillServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/reservation?action=add'>➕ New Reservation</a>");
         out.println("<a href='" + contextPath + "/reservation?action=list'>📋 All Reservations</a>");
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
+        out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill' class='active'>💰 Billing</a>");
-        if ("ADMIN".equals(role)) {
+        if (user.isAdmin()) {
             out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
         }
         out.println("</nav>");

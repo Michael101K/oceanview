@@ -94,6 +94,12 @@ public class ReservationServlet extends HttpServlet {
             case "add":
                 addReservation(request, response, session);
                 break;
+            case "checkIn":
+                checkIn(request, response, session);
+                break;
+            case "checkOut":
+                checkOut(request, response, session);
+                break;
             case "cancel":
                 cancelReservation(request, response, session);
                 break;
@@ -185,10 +191,9 @@ public class ReservationServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/reservation?action=add' class='active'>➕ New Reservation</a>");
         out.println("<a href='" + contextPath + "/reservation?action=list'>📋 All Reservations</a>");
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
+        out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
-        if ("ADMIN".equals(role)) {
-            out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
-        }
+        out.println("<a href='" + contextPath + "/help' class='active'>❓ Help & Guide</a>");
         out.println("</nav>");
         out.println("<div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div></div>");
 
@@ -485,10 +490,9 @@ public class ReservationServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/reservation?action=add'>➕ New Reservation</a>");
         out.println("<a href='" + contextPath + "/reservation?action=list' class='active'>📋 All Reservations</a>");
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
+        out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
-        if ("ADMIN".equals(role)) {
-            out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
-        }
+        out.println("<a href='" + contextPath + "/help' class='active'>❓ Help & Guide</a>");
         out.println("</nav><div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div></div>");
 
         // Main
@@ -548,6 +552,7 @@ public class ReservationServlet extends HttpServlet {
 
         String reservationNumber = request.getParameter("reservationNumber");
         String contextPath       = request.getContextPath();
+        User user                = (User) session.getAttribute("loggedInUser");
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -576,14 +581,22 @@ public class ReservationServlet extends HttpServlet {
         out.println(".detail-item label { font-size:12px; color:#888; font-weight:600; text-transform:uppercase; display:block; margin-bottom:4px; }");
         out.println(".detail-item p { font-size:14px; color:#1a1a2e; font-weight:500; }");
         out.println(".badge { padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; }");
-        out.println(".badge-confirmed { background:#dbeafe; color:#1e40af; }");
-        out.println(".badge-checkedin { background:#d1fae5; color:#065f46; }");
+        out.println(".badge-confirmed  { background:#dbeafe; color:#1e40af; }");
+        out.println(".badge-checkedin  { background:#d1fae5; color:#065f46; }");
         out.println(".badge-checkedout { background:#f3f4f6; color:#6b7280; }");
-        out.println(".badge-cancelled { background:#fee2e2; color:#991b1b; }");
-        out.println(".btn { padding:10px 22px; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; margin-right:10px; display:inline-block; margin-top:20px; }");
-        out.println(".btn-primary { background:linear-gradient(135deg,#0f4c75,#1b6ca8); color:white; }");
+        out.println(".badge-cancelled  { background:#fee2e2; color:#991b1b; }");
+        out.println(".btn { padding:10px 22px; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; margin-right:10px; display:inline-block; margin-top:20px; transition:transform 0.2s; }");
+        out.println(".btn:hover { transform:translateY(-2px); }");
+        out.println(".btn-primary   { background:linear-gradient(135deg,#0f4c75,#1b6ca8); color:white; }");
+        out.println(".btn-success   { background:linear-gradient(135deg,#065f46,#16a085); color:white; }");
+        out.println(".btn-warning   { background:linear-gradient(135deg,#92400e,#d97706); color:white; }");
+        out.println(".btn-danger    { background:linear-gradient(135deg,#991b1b,#dc2626); color:white; }");
         out.println(".btn-secondary { background:#f0f4f8; color:#555; }");
         out.println(".not-found { text-align:center; padding:60px; color:#aaa; }");
+        out.println(".alert { padding:12px 18px; border-radius:10px; font-size:13px; margin-bottom:20px; max-width:700px; }");
+        out.println(".alert-success { background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; }");
+        out.println(".alert-error   { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }");
+        out.println(".action-bar { margin-top:24px; padding-top:20px; border-top:2px solid #f0f4f8; display:flex; flex-wrap:wrap; gap:4px; }");
         out.println("</style></head><body>");
 
         // Sidebar
@@ -592,10 +605,18 @@ public class ReservationServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/reservation?action=add'>➕ New Reservation</a>");
         out.println("<a href='" + contextPath + "/reservation?action=list' class='active'>📋 All Reservations</a>");
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
+        out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
+        if (user.isAdmin()) out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
         out.println("</nav><div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div></div>");
 
         out.println("<div class='main'>");
+
+        // Alert messages
+        String msg = request.getParameter("msg");
+        if ("checkedIn".equals(msg))   out.println("<div class='alert alert-success'>✅ Guest has been checked in successfully.</div>");
+        if ("checkedOut".equals(msg))  out.println("<div class='alert alert-success'>✅ Guest has been checked out successfully.</div>");
+        if ("cancelled".equals(msg))   out.println("<div class='alert alert-success'>✅ Reservation has been cancelled.</div>");
 
         if (r == null) {
             out.println("<div class='card'><div class='not-found'>❌ Reservation not found.<br><br>");
@@ -614,12 +635,90 @@ public class ReservationServlet extends HttpServlet {
             out.println("<div class='detail-item'><label>Total Amount</label><p><strong>LKR " + String.format("%,.2f", r.getTotalAmount()) + "</strong></p></div>");
             out.println("<div class='detail-item'><label>Special Requests</label><p>" + (r.getSpecialRequests() != null && !r.getSpecialRequests().isEmpty() ? r.getSpecialRequests() : "None") + "</p></div>");
             out.println("</div>");
-            out.println("<a href='" + contextPath + "/bill?reservationNumber=" + r.getReservationNumber() + "' class='btn btn-primary'>🧾 Generate Bill</a>");
+
+            // ---- Action bar - buttons depend on current status ----
+            out.println("<div class='action-bar'>");
+
+            String status = r.getStatus();
+
+            // CONFIRMED -> can Check In or Cancel
+            if ("CONFIRMED".equals(status)) {
+                out.println("<form method='POST' action='" + contextPath + "/reservation' style='display:inline;'>");
+                out.println("<input type='hidden' name='action'            value='checkIn'>");
+                out.println("<input type='hidden' name='reservationId'     value='" + r.getReservationId() + "'>");
+                out.println("<input type='hidden' name='roomId'            value='" + r.getRoomId() + "'>");
+                out.println("<input type='hidden' name='reservationNumber' value='" + r.getReservationNumber() + "'>");
+                out.println("<button type='submit' class='btn btn-success'>🏨 Check In</button>");
+                out.println("</form>");
+
+                out.println("<form method='POST' action='" + contextPath + "/reservation' style='display:inline;' " +
+                            "onsubmit='return confirm(\"Cancel this reservation? This cannot be undone.\")'>");
+                out.println("<input type='hidden' name='action'            value='cancel'>");
+                out.println("<input type='hidden' name='reservationId'     value='" + r.getReservationId() + "'>");
+                out.println("<input type='hidden' name='roomId'            value='" + r.getRoomId() + "'>");
+                out.println("<input type='hidden' name='reservationNumber' value='" + r.getReservationNumber() + "'>");
+                out.println("<button type='submit' class='btn btn-danger'>❌ Cancel Reservation</button>");
+                out.println("</form>");
+            }
+
+            // CHECKED_IN -> can Check Out
+            if ("CHECKED_IN".equals(status)) {
+                out.println("<form method='POST' action='" + contextPath + "/reservation' style='display:inline;'>");
+                out.println("<input type='hidden' name='action'            value='checkOut'>");
+                out.println("<input type='hidden' name='reservationId'     value='" + r.getReservationId() + "'>");
+                out.println("<input type='hidden' name='roomId'            value='" + r.getRoomId() + "'>");
+                out.println("<input type='hidden' name='reservationNumber' value='" + r.getReservationNumber() + "'>");
+                out.println("<button type='submit' class='btn btn-warning'>🚪 Check Out</button>");
+                out.println("</form>");
+            }
+
+            // Always show Generate Bill (except cancelled)
+            if (!"CANCELLED".equals(status)) {
+                out.println("<a href='" + contextPath + "/bill?reservationNumber=" + r.getReservationNumber() + "' class='btn btn-primary'>🧾 Generate Bill</a>");
+            }
+
             out.println("<a href='" + contextPath + "/reservation?action=list' class='btn btn-secondary'>← Back</a>");
-            out.println("</div>");
+            out.println("</div>"); // end action-bar
+            out.println("</div>"); // end card
         }
 
         out.println("</div></body></html>");
+    }
+
+    // ------------------------------------------------
+    // Check In (POST)
+    // ------------------------------------------------
+    private void checkIn(HttpServletRequest request, HttpServletResponse response,
+                         HttpSession session) throws IOException {
+        String contextPath       = request.getContextPath();
+        String reservationNumber = request.getParameter("reservationNumber");
+        try {
+            int reservationId = Integer.parseInt(request.getParameter("reservationId"));
+            int roomId        = Integer.parseInt(request.getParameter("roomId"));
+            reservationDAO.updateReservationStatus(reservationId, "CHECKED_IN");
+            roomDAO.updateRoomStatus(roomId, "OCCUPIED");
+        } catch (Exception e) {
+            System.err.println("[ReservationServlet] checkIn error: " + e.getMessage());
+        }
+        response.sendRedirect(contextPath + "/reservation?action=view&reservationNumber=" + reservationNumber + "&msg=checkedIn");
+    }
+
+    // ------------------------------------------------
+    // Check Out (POST)
+    // ------------------------------------------------
+    private void checkOut(HttpServletRequest request, HttpServletResponse response,
+                          HttpSession session) throws IOException {
+        String contextPath       = request.getContextPath();
+        String reservationNumber = request.getParameter("reservationNumber");
+        try {
+            int reservationId = Integer.parseInt(request.getParameter("reservationId"));
+            int roomId        = Integer.parseInt(request.getParameter("roomId"));
+            reservationDAO.updateReservationStatus(reservationId, "CHECKED_OUT");
+            roomDAO.updateRoomStatus(roomId, "AVAILABLE");
+        } catch (Exception e) {
+            System.err.println("[ReservationServlet] checkOut error: " + e.getMessage());
+        }
+        response.sendRedirect(contextPath + "/reservation?action=view&reservationNumber=" + reservationNumber + "&msg=checkedOut");
     }
 
     // ------------------------------------------------
@@ -627,14 +726,16 @@ public class ReservationServlet extends HttpServlet {
     // ------------------------------------------------
     private void cancelReservation(HttpServletRequest request, HttpServletResponse response,
                                    HttpSession session) throws IOException {
-        String contextPath   = request.getContextPath();
-        String idStr         = request.getParameter("reservationId");
+        String contextPath       = request.getContextPath();
+        String reservationNumber = request.getParameter("reservationNumber");
         try {
-            int reservationId = Integer.parseInt(idStr);
-            reservationDAO.cancelReservation(reservationId);
+            int reservationId = Integer.parseInt(request.getParameter("reservationId"));
+            int roomId        = Integer.parseInt(request.getParameter("roomId"));
+            reservationDAO.updateReservationStatus(reservationId, "CANCELLED");
+            roomDAO.updateRoomStatus(roomId, "AVAILABLE");
         } catch (Exception e) {
             System.err.println("[ReservationServlet] cancelReservation error: " + e.getMessage());
         }
-        response.sendRedirect(contextPath + "/reservation?action=list");
+        response.sendRedirect(contextPath + "/reservation?action=view&reservationNumber=" + reservationNumber + "&msg=cancelled");
     }
 }
