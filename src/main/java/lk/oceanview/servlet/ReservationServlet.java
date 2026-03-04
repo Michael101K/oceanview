@@ -193,6 +193,7 @@ public class ReservationServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
         out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
+        out.println("<a href='" + contextPath + "/profile'>👤 My Profile</a>");
         out.println("<a href='" + contextPath + "/help' class='active'>❓ Help & Guide</a>");
         out.println("</nav>");
         out.println("<div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div></div>");

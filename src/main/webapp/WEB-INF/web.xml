@@ -126,6 +126,16 @@
         <url-pattern>/report</url-pattern>
     </servlet-mapping>
 
+    <!-- Profile Servlet -->
+    <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>lk.oceanview.servlet.ProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+
     <!-- ================================================ -->
     <!--  Session Timeout (30 minutes)                    -->
     <!-- ================================================ -->
