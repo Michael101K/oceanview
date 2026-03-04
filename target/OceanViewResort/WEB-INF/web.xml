@@ -106,6 +106,16 @@
         <url-pattern>/service</url-pattern>
     </servlet-mapping>
 
+    <!-- Help Servlet -->
+    <servlet>
+        <servlet-name>HelpServlet</servlet-name>
+        <servlet-class>lk.oceanview.servlet.HelpServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HelpServlet</servlet-name>
+        <url-pattern>/help</url-pattern>
+    </servlet-mapping>
+
     <!-- ================================================ -->
     <!--  Session Timeout (30 minutes)                    -->
     <!-- ================================================ -->

@@ -8,6 +8,7 @@ lk\oceanview\model\Room.class
 lk\oceanview\dao\GuestDAO.class
 lk\oceanview\dao\RoomDAO.class
 lk\oceanview\dao\UserDAO.class
+lk\oceanview\servlet\HelpServlet.class
 lk\oceanview\dao\BillDAO.class
 lk\oceanview\servlet\ServiceServlet.class
 lk\oceanview\servlet\LoginServlet.class

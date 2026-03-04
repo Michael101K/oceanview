@@ -116,6 +116,16 @@
         <url-pattern>/help</url-pattern>
     </servlet-mapping>
 
+    <!-- Report Servlet -->
+    <servlet>
+        <servlet-name>ReportServlet</servlet-name>
+        <servlet-class>lk.oceanview.servlet.ReportServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReportServlet</servlet-name>
+        <url-pattern>/report</url-pattern>
+    </servlet-mapping>
+
     <!-- ================================================ -->
     <!--  Session Timeout (30 minutes)                    -->
     <!-- ================================================ -->
