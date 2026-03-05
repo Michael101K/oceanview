@@ -11,6 +11,7 @@ lk\oceanview\model\Guest.class
 lk\oceanview\servlet\RoomServlet.class
 lk\oceanview\config\DBConnection.class
 lk\oceanview\model\Reservation.class
+lk\oceanview\servlet\LogoutServlet.class
 lk\oceanview\model\Service.class
 lk\oceanview\servlet\RoomServlet$RoomType.class
 lk\oceanview\servlet\GuestServlet.class
