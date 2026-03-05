@@ -112,7 +112,7 @@ public class HelpServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/room?action=list'>🛏 Rooms</a>");
         out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
-        out.println("<a href='" + contextPath + "/report'>ð Reports</a>");
+        out.println("<a href='" + contextPath + "/report'>📊 Reports</a>");
         if (user.isAdmin()) out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
         out.println("<a href='" + contextPath + "/profile'>👤 My Profile</a>");
         out.println("<a href='" + contextPath + "/help' class='active'>❓ Help & Guide</a>");

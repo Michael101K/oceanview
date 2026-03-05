@@ -96,7 +96,7 @@ public class DashboardServlet extends HttpServlet {
 
         // Sidebar
         out.println("<div class='sidebar'>");
-        out.println("<div class='logo'><h2>🏨 Ocean View Resort</h2><p>Management System</p></div><nav>");
+        out.println("<div class='logo'><h2>🏨 Ocean View</h2></div><nav>");
         out.println("<a href='" + contextPath + "/dashboard' class='active'>🏠 Dashboard</a>");
         out.println("<a href='" + contextPath + "/reservation?action=add'>➕ New Reservation</a>");
         out.println("<a href='" + contextPath + "/reservation?action=list'>📋 All Reservations</a>");
@@ -105,10 +105,10 @@ public class DashboardServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
         out.println("<a href='" + contextPath + "/report'>📊 Reports</a>");
-        out.println("<a href='" + contextPath + "/profile'>👤 My Profile</a>");
         if ("ADMIN".equals(role)) {
             out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
         }
+        out.println("<a href='" + contextPath + "/profile'>👤 My Profile</a>");
         out.println("<a href='" + contextPath + "/help'>❓ Help & Guide</a>");
         out.println("</nav><div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div></div>");
 

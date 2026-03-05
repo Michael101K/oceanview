@@ -452,8 +452,8 @@ public class GuestServlet extends HttpServlet {
         out.println("<a href='" + contextPath + "/service?action=list'>⭐ Services</a>");
         out.println("<a href='" + contextPath + "/bill'>💰 Billing</a>");
         out.println("<a href='" + contextPath + "/report'>📊 Reports</a>");
-        out.println("<a href='" + contextPath + "/profile'>👤 My Profile</a>");
         if (user.isAdmin()) out.println("<a href='" + contextPath + "/user?action=list'>👥 Manage Users</a>");
+        out.println("<a href='" + contextPath + "/profile'>👤 My Profile</a>");
         out.println("<a href='" + contextPath + "/help'>❓ Help & Guide</a>");
         out.println("</nav><div class='logout'><a href='" + contextPath + "/logout'>🚪 Logout</a></div></div>");
     }
